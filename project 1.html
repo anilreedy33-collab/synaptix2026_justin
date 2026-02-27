@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Healthcare Monitoring System</title>
+<style>
+body{
+    font-family: Arial;
+    background-color:#f2f2f2;
+    text-align:center;
+}
+.container{
+    background:white;
+    padding:20px;
+    width:400px;
+    margin:auto;
+    border-radius:10px;
+    box-shadow:0px 0px 10px gray;
+}
+button{
+    padding:10px 20px;
+    background:green;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Healthcare & Wellness Monitoring</h2>
+
+<p id="heart"></p>
+<p id="temp"></p>
+<p id="oxygen"></p>
+<p id="steps"></p>
+
+<h3 id="result"></h3>
+
+<button onclick="generateData()">Check Health Status</button>
+</div>
+
+<script>
+
+function generateData(){
+
+    // Simulated sensor values
+    let heartRate = Math.floor(Math.random()*75)+55;
+    let temperature = (Math.random()*3+36).toFixed(2);
+    let oxygen = Math.floor(Math.random()*12)+88;
+    let steps = Math.floor(Math.random()*20);
+
+    // Display values
+    document.getElementById("heart").innerHTML =
+    "Heart Rate: " + heartRate + " BPM";
+
+    document.getElementById("temp").innerHTML =
+    "Temperature: " + temperature + " °C";
+
+    document.getElementById("oxygen").innerHTML =
+    "Oxygen Level: " + oxygen + " %";
+
+    document.getElementById("steps").innerHTML =
+    "Steps Activity: " + steps;
+
+    // Health analysis
+    let result = "";
+
+    if(heartRate > 110){
+        result = "Warning: High Heart Rate Detected";
+    }
+    else if(heartRate < 60){
+        result = "Warning: Low Heart Rate Detected";
+    }
+    else if(temperature > 37.5){
+        result = "Warning: Possible Fever";
+    }
+    else if(oxygen < 92){
+        result = "Warning: Low Oxygen Level";
+    }
+    else if(heartRate > 100 && temperature > 37.5){
+        result = "Alert: Possible Infection";
+    }
+    else{
+        result = "Health Status Normal";
+    }
+
+    document.getElementById("result").innerHTML = result;
+}
+
+</script>
+
+</body>
+</html>
