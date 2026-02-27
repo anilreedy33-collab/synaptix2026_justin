@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Healthcare Monitoring System</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+    font-family: Arial;
+    background-color:#f2f2f2;
+    text-align:center;
+}
+.container{
+    background:white;
+    padding:20px;
+    width:550px;
+    margin:auto;
+    border-radius:10px;
+    box-shadow:0px 0px 10px gray;
+}
+input{
+    padding:8px;
+    width:80%;
+    margin-bottom:10px;
+    border-radius:5px;
+    border:1px solid gray;
+}
+button{
+    padding:10px 20px;
+    background:green;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+canvas{
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Healthcare & Wellness Monitoring</h2>
+
+<input type="text" id="username" placeholder="Enter Your Name">
+<input type="number" id="age" placeholder="Enter Your Age">
+
+<p id="heart"></p>
+<p id="temp"></p>
+<p id="oxygen"></p>
+<p id="bp"></p>
+<p id="steps"></p>
+
+<h3 id="result"></h3>
+
+<button onclick="generateData()">Check Health Status</button>
+
+<canvas id="healthChart"></canvas>
+
+</div>
+
+<script>
+
+let chart;
+
+function generateData(){
+
+    let name = document.getElementById("username").value;
+    let age = document.getElementById("age").value;
+
+    if(name === "" || age === ""){
+        alert("Please enter your name and age");
+        return;
+    }
+
+    // Simulated sensor values
+    let heartRate = Math.floor(Math.random()*75)+55;
+    let temperature = (Math.random()*3+36).toFixed(2);
+    let oxygen = Math.floor(Math.random()*12)+88;
+    let systolic = Math.floor(Math.random()*40)+100;   // 100–140
+    let diastolic = Math.floor(Math.random()*30)+60;   // 60–90
+    let steps = Math.floor(Math.random()*20);
+
+    // Display values
+    document.getElementById("heart").innerHTML =
+    "Name: " + name + "<br>Age: " + age +
+    "<br>Heart Rate: " + heartRate + " BPM";
+
+    document.getElementById("temp").innerHTML =
+    "Temperature: " + temperature + " °C";
+
+    document.getElementById("oxygen").innerHTML =
+    "Oxygen Level: " + oxygen + " %";
+
+    document.getElementById("bp").innerHTML =
+    "Blood Pressure: " + systolic + "/" + diastolic + " mmHg";
+
+    document.getElementById("steps").innerHTML =
+    "Steps Activity: " + steps;
+
+    // Health analysis
+    let result = "";
+
+    if(systolic > 140 || diastolic > 90){
+        result = "Warning: High Blood Pressure";
+    }
+    else if(systolic < 90 || diastolic < 60){
+        result = "Warning: Low Blood Pressure";
+    }
+    else if(heartRate > 110){
+        result = "Warning: High Heart Rate";
+    }
+    else if(temperature > 37.5){
+        result = "Warning: Possible Fever";
+    }
+    else if(oxygen < 92){
+        result = "Warning: Low Oxygen Level";
+    }
+    else{
+        result = "Health Status Normal";
+    }
+
+    document.getElementById("result").innerHTML =
+    name + " (Age: " + age + ") - " + result;
+
+    // Destroy old chart
+    if(chart){
+        chart.destroy();
+    }
+
+    const ctx = document.getElementById('healthChart').getContext('2d');
+
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Heart Rate', 'Temperature', 'Oxygen', 'Systolic BP', 'Diastolic BP', 'Steps'],
+            datasets: [{
+                label: 'Health Parameters',
+                data: [heartRate, temperature, oxygen, systolic, diastolic, steps],
+                backgroundColor: [
+                    'red',
+                    'yellow',
+                    'blue',
+                    'purple',
+                    'pink',
+                    'green'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>
